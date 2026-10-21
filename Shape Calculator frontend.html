@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shape Calculator | C++ OOP</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: #f3f6fc;
+    color: #172554;
+    font-family: Arial, sans-serif;
+}
+
+header {
+    background: #172554;
+    color: white;
+    text-align: center;
+    padding: 26px 15px;
+}
+
+header h1 {
+    margin: 0 0 8px;
+}
+
+header p {
+    margin: 0;
+    color: #dce7ff;
+}
+
+main {
+    max-width: 1100px;
+    margin: 25px auto;
+    padding: 0 16px;
+}
+
+.panel {
+    background: white;
+    padding: 22px;
+    margin-bottom: 22px;
+    border: 1px solid #dce4f2;
+    border-radius: 16px;
+    box-shadow: 0 5px 18px #1725540d;
+}
+
+.fields {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 14px;
+}
+
+label {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+input, select {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    margin-top: 7px;
+    border: 1px solid #cbd5e1;
+    border-radius: 9px;
+    font-size: 16px;
+}
+
+.preview {
+    margin-top: 20px;
+    padding: 14px;
+    border: 1px solid #dce4f2;
+    border-radius: 13px;
+}
+
+.shape-svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 600 / 360;
+    background: #fbfdff;
+}
+
+.metrics {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 9px;
+    margin-top: 12px;
+}
+
+.metric {
+    background: #edf3ff;
+    border-radius: 9px;
+    padding: 12px;
+    text-align: center;
+}
+
+.metric span {
+    display: block;
+    font-size: 12px;
+    margin-bottom: 5px;
+}
+
+.metric strong {
+    font-size: 17px;
+    color: #173b83;
+}
+
+button {
+    border: 0;
+    border-radius: 9px;
+    padding: 12px 17px;
+    margin-top: 15px;
+    background: #244b9b;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #172554;
+}
+
+.compare-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 15px;
+}
+
+.status {
+    padding: 12px;
+    margin-top: 14px;
+    background: #edf3ff;
+    border-radius: 9px;
+    white-space: pre-wrap;
+}
+
+@media(max-width:650px) {
+    .compare-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>SHAPE CALCULATOR</h1>
+    <p>C++ Object-Oriented Programming Project</p>
+</header>
+
+<main>
+
+<section class="panel">
+    <h2>01 · Shape Calculator</h2>
+
+    <div class="fields">
+        <label>Shape
+            <select id="type">
+                <option value="rectangle">Rectangle</option>
+                <option value="circle">Circle</option>
+                <option value="triangle">Right-Angled Triangle</option>
+            </select>
+        </label>
+
+        <label id="labA">Length
+            <input id="a" type="number" min="0.1" step="any" value="8">
+        </label>
+
+        <label id="labB">Width
+            <input id="b" type="number" min="0.1" step="any" value="5">
+        </label>
+    </div>
+
+    <div class="preview">
+        <h3 id="title">RECTANGLE PREVIEW</h3>
+        <svg id="shape" class="shape-svg" viewBox="0 0 600 360"></svg>
+        <div id="metrics" class="metrics"></div>
+    </div>
+
+    <button id="calculate">Calculate using C++</button>
+    <div id="singleStatus" class="status" hidden></div>
+</section>
+
+<section class="panel">
+    <h2>02 · Compare Two Shapes</h2>
+
+    <div class="fields">
+        <label>Shape Type
+            <select id="ct">
+                <option value="rectangle">Rectangle</option>
+                <option value="circle">Circle</option>
+                <option value="triangle">Right-Angled Triangle</option>
+            </select>
+        </label>
+    </div>
+
+    <div class="compare-grid">
+        <div class="preview">
+            <h3>SHAPE A</h3>
+            <div class="fields">
+                <label id="la1">Length
+                    <input id="a1" type="number" min="0.1" value="8">
+                </label>
+                <label id="lb1">Width
+                    <input id="b1" type="number" min="0.1" value="5">
+                </label>
+            </div>
+            <svg id="svgA" class="shape-svg" viewBox="0 0 600 360"></svg>
+            <div id="ma" class="metrics"></div>
+        </div>
+
+        <div class="preview">
+            <h3>SHAPE B</h3>
+            <div class="fields">
+                <label id="la2">Length
+                    <input id="a2" type="number" min="0.1" value="4">
+                </label>
+                <label id="lb2">Width
+                    <input id="b2" type="number" min="0.1" value="3">
+                </label>
+            </div>
+            <svg id="svgB" class="shape-svg" viewBox="0 0 600 360"></svg>
+            <div id="mb" class="metrics"></div>
+        </div>
+    </div>
+
+    <button id="compare">Compare using C++</button>
+    <div id="compareStatus" class="status" hidden></div>
+</section>
+
+</main>
+
+<footer style="text-align:center;padding:20px;color:#64748b">
+    Classes · Objects · Encapsulation · Constructors · Inheritance
+</footer>
+
+<script>
+const API = "http://127.0.0.1:8080";
+
+const $ = id => document.getElementById(id);
+const fmt = n => Number(n).toLocaleString(undefined, {
+    maximumFractionDigits: 3
+});
+
+function val(id) {
+    const raw = $(id).value;
+    const n = Number(raw);
+    return raw.trim() !== "" && Number.isFinite(n) && n > 0 ? n : null;
+}
+
+// Frontend preview only. Final calculation comes from C++ backend.
+function draw(id, type, a, b, color) {
+    const svg = $(id);
+    svg.innerHTML = "";
+
+    const NS = "http://www.w3.org/2000/svg";
+
+    function el(tag, attrs, text) {
+        const n = document.createElementNS(NS, tag);
+
+        Object.entries(attrs || {}).forEach(([k, v]) => {
+            n.setAttribute(k, v);
+        });
+
+        if (text !== undefined) n.textContent = text;
+
+        svg.appendChild(n);
+    }
+
+    el("rect", {
+        x: 0, y: 0, width: 600, height: 360,
+        fill: "#fbfdff"
+    });
+
+    if (a === null || (type !== "circle" && b === null)) {
+        el("text", {
+            x: 300, y: 185,
+            "text-anchor": "middle",
+            "font-size": 22,
+            fill: "#64748b"
+        }, "Enter positive dimensions");
+        return;
+    }
+
+    const fill = color === "#16836b" ? "#d9f5e9" : "#dce8ff";
+
+    if (type === "circle") {
+        el("circle", {
+            cx: 300, cy: 170, r: 125,
+            fill: fill, stroke: color, "stroke-width": 5
+        });
+
+        el("line", {
+            x1: 300, y1: 170, x2: 425, y2: 170,
+            stroke: "#c2413b", "stroke-width": 4
+        });
+
+        el("text", {
+            x: 300, y: 330,
+            "text-anchor": "middle",
+            "font-size": 21,
+            fill: "#172554"
+        }, "Radius = " + fmt(a));
+
+        return;
+    }
+
+    const scale = Math.min(380 / a, 220 / b);
+    const w = a * scale;
+    const h = b * scale;
+    const x = (600 - w) / 2;
+    const y = (360 + h) / 2;
+
+    if (type === "rectangle") {
+        el("rect", {
+            x: x, y: y - h, width: w, height: h,
+            fill: fill, stroke: color, "stroke-width": 5
+        });
+
+        el("text", {
+            x: 300, y: y - h - 12,
+            "text-anchor": "middle",
+            "font-size": 20,
+            fill: "#172554"
+        }, "Length = " + fmt(a));
+
+        el("text", {
+            x: 300, y: Math.min(350, y + 15),
+            "text-anchor": "middle",
+            "font-size": 20,
+            fill: "#172554"
+        }, "Width = " + fmt(b));
+
+    } else {
+        el("polygon", {
+            points: `${x},${y} ${x+w},${y} ${x},${y-h}`,
+            fill: fill,
+            stroke: color,
+            "stroke-width": 5
+        });
+
+        el("text", {
+            x: 300, y: 350,
+            "text-anchor": "middle",
+            "font-size": 20,
+            fill: "#172554"
+        }, "Base = " + fmt(a));
+
+        el("text", {
+            x: 300, y: 170,
+            "text-anchor": "middle",
+            "font-size": 17,
+            fill: "#c2413b"
+        }, "Height = " + fmt(b));
+    }
+}
+
+function labels(type, first, second) {
+    $(first).childNodes[0].textContent =
+        type === "circle" ? "Radius " :
+        type === "triangle" ? "Base " : "Length ";
+
+    $(second).childNodes[0].textContent =
+        type === "triangle" ? "Height " : "Width ";
+
+    $(second).style.display = type === "circle" ? "none" : "block";
+}
+
+function showMetrics(id, type, data) {
+    $(id).innerHTML =
+        '<div class="metric"><span>Area</span><strong>' +
+        fmt(data.area) +
+        '</strong></div>' +
+        '<div class="metric"><span>Perimeter</span><strong>' +
+        fmt(data.perimeter) +
+        '</strong></div>' +
+        (type === "triangle"
+            ? '<div class="metric"><span>Hypotenuse</span><strong>' +
+              fmt(data.hypotenuse) + '</strong></div>'
+            : '');
+}
+
+function updateSingle() {
+    const t = $("type").value;
+    const a = val("a");
+    const b = val("b");
+
+    labels(t, "labA", "labB");
+
+    $("title").textContent = t.toUpperCase() + " PREVIEW";
+
+    draw("shape", t, a, b, "#3156a6");
+}
+
+function updateCompare() {
+    const t = $("ct").value;
+
+    labels(t, "la1", "lb1");
+    labels(t, "la2", "lb2");
+
+    draw("svgA", t, val("a1"), val("b1"), "#3156a6");
+    draw("svgB", t, val("a2"), val("b2"), "#16836b");
+}
+
+["type", "a", "b"].forEach(id =>
+    $(id).addEventListener("input", updateSingle)
+);
+
+["ct", "a1", "b1", "a2", "b2"].forEach(id =>
+    $(id).addEventListener("input", updateCompare)
+);
+
+// Send calculation request to C++ backend.
+async function callCpp(path, statusId, onSuccess) {
+    const status = $(statusId);
+
+    status.hidden = false;
+    status.textContent = "Connecting to C++ backend...";
+
+    try {
+        const response = await fetch(API + path);
+        const data = await response.json();
+
+        if (!response.ok || data.error) {
+            throw new Error(data.error || "Request failed");
+        }
+
+        onSuccess(data);
+        status.textContent = "Success! Result received from C++ backend.";
+
+    } catch (error) {
+        status.textContent =
+            "C++ backend connection failed.\n" +
+            error.message + "\n\n" +
+            "Check that backend.exe is running on port 8080.";
+    }
+}
+
+$("calculate").addEventListener("click", () => {
+    const t = $("type").value;
+    const a = val("a");
+    const b = val("b");
+
+    if (a === null || (t !== "circle" && b === null)) {
+        alert("Enter positive dimensions.");
+        return;
+    }
+
+    const params = new URLSearchParams({
+        type: t,
+        a: a,
+        b: b || 1
+    });
+
+    callCpp("/calculate?" + params, "singleStatus", data => {
+        showMetrics("metrics", t, data);
+    });
+});
+
+$("compare").addEventListener("click", () => {
+    const t = $("ct").value;
+    const a1 = val("a1");
+    const b1 = val("b1");
+    const a2 = val("a2");
+    const b2 = val("b2");
+
+    if (a1 === null || a2 === null ||
+        (t !== "circle" && (b1 === null || b2 === null))) {
+        alert("Enter positive dimensions for both shapes.");
+        return;
+    }
+
+    const params = new URLSearchParams({
+        type: t,
+        a1: a1,
+        b1: b1 || 1,
+        a2: a2,
+        b2: b2 || 1
+    });
+
+    callCpp("/compare?" + params, "compareStatus", data => {
+        showMetrics("ma", t, data.shapeA);
+        showMetrics("mb", t, data.shapeB);
+
+        $("compareStatus").textContent =
+            data.comparison || "Comparison completed by C++.";
+    });
+});
+
+updateSingle();
+updateCompare();
+</script>
+
+</body>
+</html>
